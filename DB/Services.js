@@ -3,6 +3,7 @@ const service=new mongoose.Schema({
     services_id:Number,
         services_name:String,
         services_time:Number,
+        
 })
 const winSchema = new mongoose.Schema( {
     windo_no:Number,
@@ -37,11 +38,14 @@ const winSchema = new mongoose.Schema( {
     },
 
     date:[{
-        date:Date ,
+        date:String ,
         holiday:Boolean,
         allocation:[{
             tokenid:Number,
-            compelte:Boolean,
+            compelte:{
+                type: Boolean,
+                default: false
+            },
             m_number:Number,
             services_id:Number,
             allocated_time:{hours: {
