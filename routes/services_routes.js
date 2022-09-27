@@ -142,13 +142,12 @@ router.post("/addses/:wid/:sid", async (req, res) => {
         $push: { date: {date:"2022-10-09"} },
       },
  )
- let result2 = await model.updateMany({ },
-  {
-    $push: {time:{ current_time: {hours:11}} },
-  },
-)
-    
-    res.status(201).send(result);
+ let result2 =   await model.updateMany({},
+  [{$set:{"time.current_time":"$time.start_time"}}]
+  
+  )
+
+    res.status(201).send(result2);
 //holiday check
   });
 
