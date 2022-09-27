@@ -24,7 +24,7 @@ router.get("/servicelist/:wid", async (req, res) => {
   res.send(win);
 });
 
-//**** */
+//**** */make new window
 router.post("/windo", async (req, res) => {
   const id = req.body.windo_no
   //    let Model = new model({"windo_no":"2"});
@@ -110,7 +110,7 @@ router.post("/addses/:no/:sid", async (req, res) => {
   console.log(id);
   let result = await model.deleteOne(
     { windo_no: id,services_id:sid },
-   
+   //what is del....
   );
 //update it in pool services
 let result2 = await poolser.deleteOne( {s_no:sid,winows_id:id});
@@ -134,31 +134,54 @@ router.post("/addses/:wid/:sid", async (req, res) => {
 
   });
 
-  //check for add date regularly
+  // for add date regularly and set current_time=starttime
   router.post("/adddate", async (req, res) => {
   
     let result = await model.updateMany({ },
       {
-        $push: { date: {date:"2022-09-09"} },
+        $push: { date: {date:"2022-10-09"} },
       },
  )
+ let result2 = await model.updateMany({ },
+  {
+    $push: {time:{ current_time: {hours:11}} },
+  },
+)
     
     res.status(201).send(result);
 //holiday check
   });
 
-// router.get("/gtoken/:sid", async(req,res)=>{
 
-//   const sid = req.params.sid;
-//   const m_no =req.body.m_number
-//   const allocated_time=
-//   const tokenid=
+
+
+
+
+// ????????????????????????????????????????????????????get token id
+router.get("/gtoken/:sid", async(req,res)=>{
 
 // //holiday
-// //timeup
-// //token
+res.status(500).send("token is not available");
 
-// })
+//const sid = req.params.sid;
+//get window no ,things to bring,services
+
+// //timeup if in first check other
+res.status(500).send("token is not available");
+//   const allocated_time=
+
+//   const m_no =req.body.m_number
+//   const tokenid=
+
+//add into db
+
+res.status(201).send(tokenid,time,things,sname);
+res.status(500).send("token is not available");
+})
+
+
+
+
 
 //**** get service for client */
 //name,sno checkwindow allocated or not
