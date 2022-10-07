@@ -3,12 +3,13 @@ const ID = require("nodejs-unique-numeric-id-generator")
 const cors = require('cors');
 require('./DB/Config');
 const router=require('./routes/services_routes')
-// const nodeCron = require('node-cron');
+const nodeCron = require('node-cron');
 
 const Services = require("./DB/Services");
 const { default: mongoose } = require('mongoose');
 
 const app = express(); 
+
 
 //middleware
 app.use(express.json());
@@ -19,12 +20,29 @@ db.on('error',()=>console.log('connection not done'))
 db.once('open',()=>console.log('connection done'))
 
 app.use('/',router)
-// const job = nodeCron.schedule("30 5 2 * * *", () => {
-//     console.log(new Date().toLocaleString());
+const job = nodeCron.schedule("30 5 2 * * *", async function() {
     
-//   }, 
-// //   { scheduled: true, timezone: 'Asia/Bangkok' }
-//   );
+
+    var ndate =new Date()
+const fdate=`${ndate.getUTCFullYear()}-${ndate.getUTCMonth()}-${ndate.getUTCDate()} 14:48 UTC`
+var today=new Date(fdate)
+console.log( typeof today.toISOString().slice(0,10))
+const date1=today.toISOString().slice(0,10)
+
+    let result = await model.updateMany({ },
+        {
+          $push: { date: {date:date1} },
+        },
+   )
+   let result2 =   await model.updateMany({},
+    [{$set:{"time.current_time":"$time.start_time"}}]
+    
+    )
+  
+      res.status(201).send(result2);
+  }, 
+  { scheduled: true, timezone: 'Asia/Bangkok' }
+  );
 
 // var d = new Date(Date.now());
 // d.toString() 

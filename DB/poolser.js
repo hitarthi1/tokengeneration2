@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const poolSchema=new mongoose.Schema({
     
         s_name:String,
-        s_no:String,
+        s_no:Number,
         s_bring:String,
         winows_id:[
             {

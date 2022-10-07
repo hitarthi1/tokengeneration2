@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const service=new mongoose.Schema({
-    services_id:Number,
+        services_id:Number,
         services_name:String,
         services_time:Number,
         
 })
+
 const winSchema = new mongoose.Schema( {
     windo_no:Number,
 
