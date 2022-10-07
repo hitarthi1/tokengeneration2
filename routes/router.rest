@@ -98,3 +98,4 @@
  GET http://localhost:5000/poolclient
  Content-Type: application/json
 
+# GET http://localhost:5000/wtime/2

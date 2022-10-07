@@ -170,6 +170,7 @@ router.get("/gtoken/:sid", async (req, res) => {
     const sid = req.params.sid;
     let windowslist = await poolser.find({ s_no: sid });
     console.log(windowslist[0].winows_id)
+   // console.log(windowslist[0] ,"oooooooooooooooooooooo")
 
     // //timeup if in first check other
 
@@ -213,6 +214,8 @@ router.get("/gtoken/:sid", async (req, res) => {
       let hour = timeupdate[0].time.current_time.hours;
      let minutes = timeupdate[0].time.current_time.minutes;
       let services_time =10
+      let posthour=hour
+      let postminutes=minutes
       // timeupdate.services_time;
       console.log(hour)
 
@@ -255,7 +258,7 @@ router.get("/gtoken/:sid", async (req, res) => {
           },
         }
       );
-//       //res.status(201).send(tokenid,time,things,sname,windowno);
+      res.status(201).send({'tokenid':tokenid,"minutes":postminutes,"hours":posthour,"bring":windowslist[0].s_bring,"sname":windowslist[0].s_name,"windono":finalwindow.windo_no});
     }
     else{
       res.status(500).send("token is not available");}
@@ -312,14 +315,30 @@ router.post("/wtime/:wid", async (req, res) => {
 
 //***get details of users*/
 router.get("/wtime/:wid", async (req, res) => {
-  const wid = req.params.wid;
+  let wid = req.params.wid;
   var ndate = new Date();
   const fdate = `${ndate.getUTCFullYear()}-${ndate.getUTCMonth()}-${ndate.getUTCDate()} 14:48 UTC`;
   var today = new Date(fdate);
   console.log(typeof today.toISOString().slice(0, 10));
   const date = today.toISOString().slice(0, 10);
   // let result = await model.find({ $and:[{windo_no: wid},{}]})
-  let result = await model.find({ windo_no: wid, "date.date": date });
+ // let result = await model.find({ windo_no: wid,}).select("date");
+ console.log(wid)
+  let result = await model.aggregate([
+    {
+      $match: {
+        windo_no: 2,
+      }
+    },
+    {
+      $unwind: '$date'
+    },
+    {
+      $match: {
+        'date.date': "2022-09-09"
+      }
+    }
+  ]);
   res.send(result);
 });
 
