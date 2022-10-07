@@ -37,6 +37,9 @@
 #     "end_time":{
 #         "hours":18,
 #         "minutes":10
+#     }, "current_time":{
+#         "hours":10,
+#         "minutes":10
 #     }
 # }
 
@@ -86,16 +89,16 @@
 
 #  }
 
-#  GET http://localhost:5000/gtoken/517
-#  Content-Type: application/json
-
-# {
-#     "m_number":9104883288
-# }
-
-
-
- GET http://localhost:5000/poolclient
+ GET http://localhost:5000/gtoken/517/1
  Content-Type: application/json
+
+{
+    "m_number":9104883288
+}
+
+
+
+#  GET http://localhost:5000/poolclient
+#  Content-Type: application/json
 
 # GET http://localhost:5000/wtime/2

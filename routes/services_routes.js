@@ -152,7 +152,7 @@ router.post("/adddate", async (req, res) => {
 });
 
 // ????????????????????????????????????????????????????get token id
-router.get("/gtoken/:sid", async (req, res) => {
+router.get("/gtoken/:sid/:slot", async (req, res) => {
   // //holiday
   var ndate = new Date();
   const fdate = `${ndate.getUTCFullYear()}-${ndate.getUTCMonth()}-${ndate.getUTCDate()} 14:48 UTC`;
@@ -168,27 +168,47 @@ router.get("/gtoken/:sid", async (req, res) => {
   else {
     //get window no ,things to bring,services
     const sid = req.params.sid;
+    const slot = req.params.slot;
     let windowslist = await poolser.find({ s_no: sid });
     console.log(windowslist[0].winows_id)
-   // console.log(windowslist[0] ,"oooooooooooooooooooooo")
+  
 
-    // //timeup if in first check other
+    
 
-    //   const allocated_time=
-
-    const finalwindow = await model
+if(slot==1){
+  var finalwindow = await model
       .findOne({
         windo_no: { $in: windowslist[0].winows_id },
  //       "time.end_time.hours": { $gte: "$time.current_time.hours" },
-        $expr:{$gt:["$time.end_time.hours", "$time.current_time.hours"]}
+        $expr:{$gt:["$time1.end_time.hours", "$time1.current_time.hours"]}
+      })
+      .select("windo_no");
+      console.log(finalwindow)
+}
+else if(slot==2){var finalwindow = await model
+  .findOne({
+    windo_no: { $in: windowslist[0].winows_id },
+//       "time.end_time.hours": { $gte: "$time.current_time.hours" },
+    $expr:{$gt:["$time2.end_time.hours", "$time2.current_time.hours"]}
+  })
+  .select("windo_no");
+  console.log(finalwindow.windo_no)}
+else {
+  var finalwindow = await model
+      .findOne({
+        windo_no: { $in: windowslist[0].winows_id },
+ //       "time.end_time.hours": { $gte: "$time.current_time.hours" },
+        $expr:{$gt:["$time3.end_time.hours", "$time3.current_time.hours"]}
       })
       .select("windo_no");
       console.log(finalwindow.windo_no)
+}
+
+
+
     if (finalwindow !== null) {
       const m_no = req.body.m_number;
       const tokenid = ID.generate(new Date().toJSON());
-
-//console.log
 
       let timeupdate = await model
         .find({ 
@@ -197,25 +217,25 @@ router.get("/gtoken/:sid", async (req, res) => {
         }
     //  ,{new: true, arrayFilters: [{ "services.services_id": sid }] }
         )
-     //  .select( "services.$[elem].services_time");
+      
+        if(slot==1){ 
+          var hour = timeupdate[0].time1.current_time.hours;
+          var minutes = timeupdate[0].time1.current_time.minutes;
+          var postminutes=minutes
+          var posthour=hour}
+        else if(slot==2){ var hour = timeupdate[0].time2.current_time.hours;
+          var minutes = timeupdate[0].time2.current_time.minutes;
+          var postminutes=minutes
+          var posthour=hour}
+        else{ var hour = timeupdate[0].time3.current_time.hours;
+          var minutes = timeupdate[0].time3.current_time.minutes;
+          var postminutes=minutes
+          var posthour=hour}
+     
 
-
-//let time2=await model.aggregate([ { $unwind: '$services' }, { $match: { windo_no: finalwindow.windo_no, 'services.services_id': sid } } ])
-
-
-      // console.log(timeupdate);
-       // console.log(time2);
-
-
-// //{ $set: { "services.$[elem].services_time": time } },
-// // { new: true, arrayFilters: [{ "elem.services_id": sid }] }
-
-
-      let hour = timeupdate[0].time.current_time.hours;
-     let minutes = timeupdate[0].time.current_time.minutes;
       let services_time =10
-      let posthour=hour
-      let postminutes=minutes
+   
+     
       // timeupdate.services_time;
       console.log(hour)
 
@@ -240,6 +260,7 @@ router.get("/gtoken/:sid", async (req, res) => {
          
         }, { new: true, arrayFilters: [{ "elem.date": "2022-09-09" }] }
       );
+
       if (minutes + services_time > 59) {
         hour = hour + 1;
         minutes = minutes + services_time - 60;
@@ -274,8 +295,15 @@ router.get("/gtoken/:sid", async (req, res) => {
 router.get("/poolclient", async (req, res) => {
   let result = await poolser.find({
     winows_id: { $exists: true, $not: { $size: 0 } },
-  });
+  }).select("s_name");
   res.status(201).send(result);
+ 
+  var result2= result.filter(result => {
+    //return result.s_name
+    console.log(result.s_name)
+  })
+
+  
 });
 
 // get servicesfor admin//window wise services
@@ -283,6 +311,7 @@ router.get("/poolclient", async (req, res) => {
 router.get("/poolclient", async (req, res) => {
   let result = await poolser.find();
   res.status(201).send(result);
+  
 });
 
 //**post add servicesinto pool */
@@ -298,18 +327,21 @@ router.post("/addpool", async (req, res) => {
 router.post("/wtime/:wid", async (req, res) => {
   const wid = req.params.wid;
   const st = req.body.start_time;
+  const ct = req.body.current_time;
   const et = req.body.end_time;
   let result = await model.updateOne(
     { windo_no: wid },
-    {
-      $set: {
-        "time.start_time.hours": st.hours,
-        "time.start_time.minutes": st.minutes,
-        "time.end_time.hours": et.hours,
-        "time.end_time.minutes": et.minutes,
+    {$set: {
+        "time2.start_time.hours": st.hours,
+        "time2.start_time.minutes": st.minutes,
+        "time2.end_time.hours": et.hours,
+        "time2.end_time.minutes": et.minutes,
+        "time2.current_time.hours": ct.hours,
+        "time2.current_time.minutes": ct.minutes,
       },
     }
   );
+  console.log(result)
 });
 
 

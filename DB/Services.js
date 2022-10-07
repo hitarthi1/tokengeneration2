@@ -13,7 +13,55 @@ const winSchema = new mongoose.Schema( {
 
 
 
-    time:{
+    time1:{
+        start_time:  {hours: {
+            type: Number, min: 0, max: 23
+          },
+         minutes: {
+            type: Number,  min: 0, max: 59
+          }
+         },
+
+        current_time:  {hours: {
+            type: Number,  min: 0, max: 23
+        },
+        minutes: {
+            type: Number,  min: 0, max: 59
+        }},
+        
+        end_time:  {hours: {
+            type: Number,  min: 0, max: 23
+        },
+        minutes: {
+            type: Number,  min: 0, max: 59
+        }},
+   
+    },
+    time2:{
+        start_time:  {hours: {
+            type: Number, min: 0, max: 23
+          },
+         minutes: {
+            type: Number,  min: 0, max: 59
+          }
+         },
+
+        current_time:  {hours: {
+            type: Number,  min: 0, max: 23
+        },
+        minutes: {
+            type: Number,  min: 0, max: 59
+        }},
+        
+        end_time:  {hours: {
+            type: Number,  min: 0, max: 23
+        },
+        minutes: {
+            type: Number,  min: 0, max: 59
+        }},
+   
+    },
+    time3:{
         start_time:  {hours: {
             type: Number, min: 0, max: 23
           },
