@@ -89,7 +89,7 @@
 
 #  }
 
- GET http://localhost:5000/gtoken/517/1
+ GET http://localhost:5000/gtoken/517/3
  Content-Type: application/json
 
 {

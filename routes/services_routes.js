@@ -192,7 +192,8 @@ else if(slot==2){var finalwindow = await model
     $expr:{$gt:["$time2.end_time.hours", "$time2.current_time.hours"]}
   })
   .select("windo_no");
-  console.log(finalwindow.windo_no)}
+  console.log(finalwindow)
+}
 else {
   var finalwindow = await model
       .findOne({
@@ -233,9 +234,8 @@ else {
           var posthour=hour}
      
 
-      let services_time =10
+      let services_time =5
    
-     
       // timeupdate.services_time;
       console.log(hour)
 
@@ -268,17 +268,56 @@ else {
         minutes = minutes + services_time;
       }
       console.log(finalresult)
-      let timeupdate2 = await model.findOneAndUpdate(
-        { windo_no: finalwindow.windo_no, 
-   //       "services.services_id": sid 
-        },
-        {
-          $set: {
-            "time.current_time.hours": hour,
-            "time.current_time.minutes": minutes,
-          },
-        }
-      );
+
+
+
+if(slot==1){ let timeupdate2 = await model.findOneAndUpdate(
+  { windo_no: finalwindow.windo_no, 
+//       "services.services_id": sid 
+  },
+  {
+    $set: {
+      "time1.current_time.hours": hour,
+      "time1.current_time.minutes": minutes,
+    },
+  }
+);}
+else if (slot==2){ let timeupdate2 = await model.findOneAndUpdate(
+  { windo_no: finalwindow.windo_no, 
+//       "services.services_id": sid 
+  },
+  {
+    $set: {
+      "time2.current_time.hours": hour,
+      "time2.current_time.minutes": minutes,
+    },
+  }
+);}
+else{ let timeupdate2 = await model.findOneAndUpdate(
+  { windo_no: finalwindow.windo_no, 
+//       "services.services_id": sid 
+  },
+  {
+    $set: {
+      "time3.current_time.hours": hour,
+      "time3.current_time.minutes": minutes,
+    },
+  }
+);}
+
+
+
+  //     let timeupdate2 = await model.findOneAndUpdate(
+  //       { windo_no: finalwindow.windo_no, 
+  //  //       "services.services_id": sid 
+  //       },
+  //       {
+  //         $set: {
+  //           "time1.current_time.hours": hour,
+  //           "time1.current_time.minutes": minutes,
+  //         },
+  //       }
+  //     );
       res.status(201).send({'tokenid':tokenid,"minutes":postminutes,"hours":posthour,"bring":windowslist[0].s_bring,"sname":windowslist[0].s_name,"windono":finalwindow.windo_no});
     }
     else{
