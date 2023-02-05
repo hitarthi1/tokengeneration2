@@ -89,16 +89,15 @@
 
 #  }
 
- GET http://localhost:5000/gtoken/517/3
- Content-Type: application/json
-
-{
-    "m_number":9104883288
-}
-
-
-
-#  GET http://localhost:5000/poolclient
+#  GET http://localhost:5000/gtoken/517/3
 #  Content-Type: application/json
 
-# GET http://localhost:5000/wtime/2
+# {
+#     "m_number":9104883288
+# }
+
+
+#  GET http://localhost:5000/poolclient1
+#  Content-Type: application/json
+
+GET http://localhost:5000/wtime/2

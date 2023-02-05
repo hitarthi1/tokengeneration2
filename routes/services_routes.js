@@ -16,7 +16,7 @@ router.get("/windowlist", async (req, res) => {
   //console.log(win)
   res.send(win);
 });
-
+// perticular windo wise services
 router.get("/servicelist/:wid", async (req, res) => {
   const wid = req.params.wid;
   let win = await model.find({ windo_no: wid }).select("services");
@@ -88,6 +88,7 @@ router.post("/holiday", async (req, res) => {
 router.post("/addses/:no", async (req, res) => {
   const id = req.params.no;
   const sid = req.body.services.services_id;
+  // services id ,name,time
   console.log(id);
   let result = await model.updateOne(
     { windo_no: id },
@@ -135,7 +136,7 @@ router.post("/addses/:wid/:sid", async (req, res) => {
   res.status(201).send();
 });
 
-// for add date regularly and set current_time=starttime
+// for add date regularly and set current_time=starttime*************
 router.post("/adddate", async (req, res) => {
   let result = await model.updateMany(
     {},
@@ -168,7 +169,9 @@ router.get("/gtoken/:sid/:slot", async (req, res) => {
   else {
     //get window no ,things to bring,services
     const sid = req.params.sid;
+    console.log("sid sid",sid)
     const slot = req.params.slot;
+    console.log("slot slot",slot)
     let windowslist = await poolser.find({ s_no: sid });
     console.log(windowslist[0].winows_id)
   
@@ -202,7 +205,7 @@ else {
         $expr:{$gt:["$time3.end_time.hours", "$time3.current_time.hours"]}
       })
       .select("windo_no");
-      console.log(finalwindow.windo_no)
+      console.log("final window",finalwindow.windo_no)
 }
 
 
@@ -347,7 +350,7 @@ router.get("/poolclient", async (req, res) => {
 
 // get servicesfor admin//window wise services
 //name,sno ,bring,windows,give all
-router.get("/poolclient", async (req, res) => {
+router.get("/poolclient1", async (req, res) => {
   let result = await poolser.find();
   res.status(201).send(result);
   
@@ -392,21 +395,27 @@ router.get("/wtime/:wid", async (req, res) => {
   var today = new Date(fdate);
   console.log(typeof today.toISOString().slice(0, 10));
   const date = today.toISOString().slice(0, 10);
+  console.log(date,"todaydate")
+
+var date2="2022-09-09"
+var date3=date2.toString();
+console.log(date2,"thatdate")
   // let result = await model.find({ $and:[{windo_no: wid},{}]})
  // let result = await model.find({ windo_no: wid,}).select("date");
- console.log(wid)
+ console.log(+wid)
   let result = await model.aggregate([
     {
       $match: {
-        windo_no: 2,
+        windo_no: {$eq: +wid}
       }
     },
-    {
-      $unwind: '$date'
-    },
+    // {
+    //   $unwind: '$date'
+    // },
     {
       $match: {
-        'date.date': "2022-09-09"
+        'date.date':date2.toString()
+        //  "2022-09-09"
       }
     }
   ]);

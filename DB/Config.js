@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
  
 
 mongoose.connect("mongodb+srv://trupti:trupti@cluster0.om1nk.mongodb.net/tokendb?retryWrites=true&w=majority",{
+
 //    useNewUrlParser: true,
 //      useCreateIndex: true,
 //      useFindAndModify: false,
