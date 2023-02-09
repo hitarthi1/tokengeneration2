@@ -1,4 +1,4 @@
-# POST http://localhost:5000/addses/1
+# POST http://localhost:5000/addses/2
 # Content-Type: application/json
 
 # {
@@ -82,11 +82,9 @@
 #  Content-Type: application/json
 
 #  {
-#    "s_name": " Nationality Certificate for Educational Purpose",
-#    "s_no": 32,
-#    "s_bring": "Copy of Birth Certificate or Copy of Domicile Certificate or Copy of Indian Passport,Copy of school leaving certificate and copy of school leaving certificate of parent/guardian,Copy of mark sheet and certificate of standard-10/standard-1r,Copy of telephone bill or light bill or copy of voter ID card or copy of ration card or tax demand bill,Copy of Income Tax Permanent Account Number (PANCARD),Request letter asking to submit nationality certificate/copy of admission form/receipt of concerned institute college"
-
-
+#    "s_name": " adharedit",
+#    "s_no": 517,
+#    "s_bring": "adharcard,pancard,birth cetificates"
 #  }
 
 #  GET http://localhost:5000/gtoken/517/3
@@ -97,7 +95,7 @@
 # }
 
 
-#  GET http://localhost:5000/poolclient1
-#  Content-Type: application/json
+ GET http://localhost:5000/poolclient1
+ Content-Type: application/json
 
-GET http://localhost:5000/wtime/2
+# GET http://localhost:5000/wtime/2

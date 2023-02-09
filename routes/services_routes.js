@@ -154,6 +154,7 @@ router.post("/adddate", async (req, res) => {
 
 // ????????????????????????????????????????????????????get token id
 router.get("/gtoken/:sid/:slot", async (req, res) => {
+  
   // //holiday
   var ndate = new Date();
   const fdate = `${ndate.getUTCFullYear()}-${ndate.getUTCMonth()}-${ndate.getUTCDate()} 14:48 UTC`;
@@ -200,6 +201,7 @@ else if(slot==2){var finalwindow = await model
 else {
   var finalwindow = await model
       .findOne({
+
         windo_no: { $in: windowslist[0].winows_id },
  //       "time.end_time.hours": { $gte: "$time.current_time.hours" },
         $expr:{$gt:["$time3.end_time.hours", "$time3.current_time.hours"]}
@@ -337,23 +339,23 @@ else{ let timeupdate2 = await model.findOneAndUpdate(
 router.get("/poolclient", async (req, res) => {
   let result = await poolser.find({
     winows_id: { $exists: true, $not: { $size: 0 } },
-  }).select("s_name");
+  }).select();
   res.status(201).send(result);
  
   var result2= result.filter(result => {
     //return result.s_name
     console.log(result.s_name)
   })
-
   
 });
 
 // get servicesfor admin//window wise services
 //name,sno ,bring,windows,give all
 router.get("/poolclient1", async (req, res) => {
-  let result = await poolser.find();
+  let result = await poolser.find({}).select("s_name s_no");;
   res.status(201).send(result);
   
+
 });
 
 //**post add servicesinto pool */
