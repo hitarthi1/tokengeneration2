@@ -137,11 +137,19 @@ router.post("/addses/:wid/:sid", async (req, res) => {
 });
 
 // for add date regularly and set current_time=starttime*************
-router.post("/adddate", async (req, res) => {
+router.get("/adddate", async (req, res) => {
+  var ndate = new Date();
+  const fdate = `${ndate.getUTCFullYear()}-${ndate.getUTCMonth()}-${ndate.getUTCDate()} 14:48 UTC`;
+  var today = new Date(fdate);
+  console.log(typeof today.toISOString().slice(0, 10));
+  const date = today.toISOString().slice(0, 10);
+console.log(date)
+
+
   let result = await model.updateMany(
     {},
     {
-      $push: { date: { date: "2022-06-10" } },
+      $push: { date: { date: date.toString() } },
     }
   );
   let result2 = await model.updateMany({}, [
@@ -149,8 +157,9 @@ router.post("/adddate", async (req, res) => {
   ]);
 
   res.status(201).send(result2);
-  //holiday check
+  // holiday check
 });
+
 
 // ????????????????????????????????????????????????????get token id
 router.get("/gtoken/:sid/:slot", async (req, res) => {
@@ -330,6 +339,7 @@ else{ let timeupdate2 = await model.findOneAndUpdate(
   }
 });
 
+
 //sum
 //add
 
@@ -416,7 +426,7 @@ console.log(date2,"thatdate")
     // },
     {
       $match: {
-        'date.date':date2.toString()
+        'date.date':date.toString()
         //  "2022-09-09"
       }
     }
